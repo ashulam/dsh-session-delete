@@ -1,0 +1,5 @@
+# dsh bundle patch: insert the session-delete host half (the browser half is
+# declared by package.json's `dsh.client` and served by the module loader).
+- insert:
+    - id: session-delete
+      name: dsh-session-delete
