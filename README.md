@@ -1,5 +1,7 @@
 # dsh-session-delete
 
+**English** | [简体中文](README.zh.md)
+
 Adds **「删除会话 / Delete session」** to the sidebar's Session context menu in
 [DeepSeek Harness](https://github.com/deepseek-ai) and performs a real,
 recoverable deletion.
@@ -11,7 +13,7 @@ recoverable deletion.
 
 ## What it does
 
-Right-click a session in the sidebar → **Delete session**.
+Hover a session row and click its **⋯** button → **Delete session**.
 
 | Session state | Behaviour |
 |---|---|
