@@ -7,9 +7,9 @@ Adds **「删除会话 / Delete session」** to the sidebar's Session context me
 recoverable deletion.
 
 
-![Session context menu with the Delete entry](assets/01-session-menu.png)
+![Session context menu with the Delete entry](assets/03-session-menu.en.png)
 
-![Confirmation before deleting](assets/02-confirm-dialog.png)
+![Confirmation before deleting](assets/04-confirm-dialog.en.png)
 
 ## What it does
 
