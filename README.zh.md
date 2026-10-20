@@ -43,7 +43,7 @@
 
 ## 安装
 
-登记表合并后可在插件市场直接安装。手动安装：
+已上架插件市场，可直接安装。手动安装：
 
 ```sh
 dsh plugin --profile desktop add github:ashulam/dsh-session-delete

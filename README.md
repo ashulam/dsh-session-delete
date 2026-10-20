@@ -56,7 +56,7 @@ whose stored session is gone.
 
 ## Install
 
-Listed in the plugin market once the registry entry is merged. Manual install:
+Listed in the plugin market. Manual install:
 
 ```sh
 dsh plugin --profile desktop add github:ashulam/dsh-session-delete
