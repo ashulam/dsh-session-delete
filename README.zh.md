@@ -30,6 +30,20 @@
 
 其它一概不动。附件是跨会话共享、按内容寻址的 blob，**故意不碰**。Workspace 登记里的 `sessionIds` 条目会保留——登记表没有"注销会话"的 API，而侧栏本来就会跳过存储已不存在的 id。
 
+## 维护：清理悬空引用
+
+删除会话会移除日志与投影缓存，但 Workspace 登记表里的 `sessionIds` 条目会保留——登记表没有"注销会话"的 API，而且运行中的应用会从内存重写 `workspace.json`，**运行中直接改它不安全**。（2026-10-22 事故就是教训：运行中改这个文件再强杀 DSH，内存态丢失、workspace controller 不可用。）
+
+插件只做**报告**：`GET /dsh-session-delete/dangling` 列出 `workspace.json` 里引用了、但磁盘上已没有对应会话的 id；每次成功删除也会在响应里给出 `workspaceRef: true`。清理是**离线**任务：
+
+```sh
+# 先完全退出 DSH
+node tools/prune-dangling-sessionids.mjs            # 预演（只读，任何时间都可跑）
+node tools/prune-dangling-sessionids.mjs --apply    # 写入：先备份 + 原子替换，UTF-8 无 BOM
+```
+
+工具会先备份到 `storages/backups/`，DSH 运行中拒绝写入（`--force` 可跳过），发现 BOM 会剥掉，清理 `sessionIds` 与 `pinnedSessionIds` / `archivedSessionIds`，写完再解析校验一遍才退出。
+
 ## 安全
 
 - **活会话**一律拒绝（`409`），只能走"下次启动排队删除"。

@@ -1,6 +1,6 @@
 {
     "name":  "dsh-session-delete",
-    "version":  "0.1.0",
+    "version":  "0.2.0",
     "description":  "Delete a session from the sidebar context menu: moves its log directory and projection cache to the Windows Recycle Bin.",
     "type":  "module",
     "main":  "lib/index.js",
@@ -15,7 +15,8 @@
                   "client",
                   "cordis.patch.yml",
                   "README.md",
-                  "README.zh.md"
+                  "README.zh.md",
+                  "tools"
               ],
     "license":  "MIT",
     "dsh":  {

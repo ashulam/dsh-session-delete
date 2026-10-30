@@ -38,6 +38,31 @@ deliberately left alone. The Workspace registry keeps its `sessionIds` entry —
 the registry has no "unregister a session" API, and the sidebar already skips ids
 whose stored session is gone.
 
+## Maintenance: dangling session ids
+
+Deleting a session removes its log and replay cache, but the Workspace registry
+keeps its `sessionIds` entry: the registry has no "unregister a session" API, and
+a running app rewrites `workspace.json` from memory, so editing it live is unsafe.
+(The 2026-10-22 incident note is the cautionary tale: editing that file while DSH
+ran, then hard-killing the app, lost in-memory workspace state and left the
+workspace controller unavailable.)
+
+The plugin only **reports** dangling references — `GET /dsh-session-delete/dangling`
+returns the ids referenced by `workspace.json` that no longer have a stored
+session, and every successful delete reports `workspaceRef: true` when its id
+stays referenced. Cleaning them is an offline job on purpose:
+
+```sh
+# close DSH completely first
+node tools/prune-dangling-sessionids.mjs            # dry run (read-only, safe anytime)
+node tools/prune-dangling-sessionids.mjs --apply    # write: backup + atomic rename, UTF-8 without BOM
+```
+
+The tool backs `workspace.json` up under `storages/backups/`, refuses to write
+while DSH is running (`--force` overrides), strips a BOM if it finds one, prunes
+`sessionIds` plus `pinnedSessionIds` / `archivedSessionIds`, and verifies the
+result parses back before it exits.
+
 ## Safety
 
 - A **live** session is refused (`409`); only the queue path can remove it, on the
